@@ -1,6 +1,6 @@
 namespace AFloorUp.CallPanels;
 
-public class DirectionCallPanel(int floor, Memory<CallInfo> memory) : CallPanel(floor, memory)
+public class DirectionCallPanel(Memory<CallInfo> memory) : CallPanel(memory)
 {
     public override void Call(int targetFloor)
     {

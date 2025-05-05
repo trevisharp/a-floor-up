@@ -14,7 +14,7 @@ public class Building
     public int Elevators { get; private set; } = 0;
 
     readonly List<Elevator> elevators = [];
-    readonly Dictionary<int, CallPanel> floors = [];
+    readonly Dictionary<int, CallPanel[]> floors = [];
 
     public void AddElevator(Elevator elevator)
     {
@@ -22,13 +22,13 @@ public class Building
         elevators.Add(elevator);
     }
 
-    public void AddFloor(CallPanel callPanel)
+    public void AddFloor(params CallPanel[] callPanel)
     {
         Floors++;
         floors.Add(Floors, callPanel);
     }
 
-    public CallPanel GetPanel(int floor)
+    public CallPanel[] GetPanels(int floor)
     {
         if (floors.TryGetValue(floor, out var panel))
             return panel;
@@ -36,8 +36,8 @@ public class Building
         throw new Exception($"Invalid floor {floor}");
     }
 
-    public void Run()
+    public void Draw(float x, float y, float widArea, float heiArea)
     {
-        throw new NotImplementedException();
+        
     }
 }

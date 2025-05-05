@@ -11,8 +11,22 @@ public abstract class Elevator(
     public readonly Memory<CallInfo> CallMemory = callMemory;
     public readonly Memory<RequestInfo> RequestMemory = requestMemory;
     public readonly ElevatorLogic Logic = logic;
-    public int CurrentFloor { get; internal set; }
 
+    public float YPosition { get; protected set; } = 0f;
+    public bool DoorIsOpen { get; protected set; } = false;
+
+    public abstract void Draw();
     public abstract void Simulate(float dt);
-    public abstract void Draw(float x, float y, float widArea, float heiArea);
+    public abstract void SetDrawInfo(float x, float y, float areaWidth, float areaHeight, int floors);
+
+    protected ElevatorController GetController()
+    {
+        return new ElevatorController {
+            Id = Id,
+            YPosition = YPosition,
+            CallMemory = CallMemory,
+            RequestMemory = RequestMemory,
+            DoorIsOpen = DoorIsOpen
+        };
+    }
 }

@@ -2,8 +2,8 @@ using System;
 
 namespace AFloorUp.Logics;
 
-public class LambdaElevatorLogic(Action<ElevatorControl> function) : ElevatorLogic
+public class LambdaElevatorLogic(Action<ElevatorController> function) : ElevatorLogic
 {
-    public override void Decide(ElevatorControl elevator)
+    public override void Decide(ElevatorController elevator)
         => function?.Invoke(elevator);
 }

@@ -1,6 +1,6 @@
 namespace AFloorUp.CallPanels;
 
-public class SimpleCallPanel(int floor, Memory<CallInfo> memory) : CallPanel(floor, memory)
+public class SimpleCallPanel(Memory<CallInfo> memory) : CallPanel(memory)
 {
     public override void Call(int targetFloor)
     {
