@@ -6,8 +6,8 @@ using Logics;
 
 public abstract class ElevatorLogic
 {
-    public abstract void Decide(Elevator elevator);
+    public abstract void Decide(ElevatorControl elevator);
 
-    public static ElevatorLogic FromFunction(Action<Elevator> logic)
+    public static ElevatorLogic FromFunction(Action<ElevatorControl> logic)
         => new LambdaElevatorLogic(logic);
 }

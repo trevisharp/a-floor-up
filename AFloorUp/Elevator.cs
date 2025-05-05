@@ -1,18 +1,17 @@
 namespace AFloorUp;
 
 public abstract class Elevator(
+    int id,
     ElevatorLogic logic,
-    CallMemory memory
+    Memory<CallInfo> callMemory,
+    Memory<RequestInfo> requestMemory
     )
 {
-    protected int target = 0;
-
-    public readonly CallMemory Memory = memory;
+    public readonly int Id = id;
+    public readonly Memory<CallInfo> CallMemory = callMemory;
+    public readonly Memory<RequestInfo> RequestMemory = requestMemory;
     public readonly ElevatorLogic Logic = logic;
     public int CurrentFloor { get; internal set; }
-
-    public void MoveTo(int target)
-        => this.target = target;
 
     public abstract void Simulate(float dt);
     public abstract void Draw(float x, float y, float widArea, float heiArea);
