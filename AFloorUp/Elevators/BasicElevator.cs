@@ -9,7 +9,7 @@ namespace AFloorUp.Elevators;
 /// <summary>
 /// A basic and cheap elevator for small business.
 /// A slow elevator (0.25) with imprecise decision moment and
-/// low decision frequency (4Hz). Open the door for 5 seconds.
+/// low decision frequency (5Hz). Open the door for 5 seconds.
 /// </summary>
 public class BasicElevator(
     int id,
@@ -24,24 +24,27 @@ public class BasicElevator(
     float doorOpenWaiting = 0;
     bool waiting = true;
 
-    dynamic shaftRender = render(() =>
+    readonly dynamic shaftRender = render(() =>
     {
         color = vec(1f, 0.8f, 0.8f, 1f);
         fill();
 
+        move(0, 0, 1);
         color = black;
         draw(3);
     });
 
-    dynamic elevatorRender = render((val y) =>
+    readonly dynamic elevatorRender = render((val y) =>
     {
-        move(0, y, 500);
+        move(0, y, 5);
         color = vec(0.6f, 0.48f, 0.48f, 1f);
         fill();
 
+        move(0, 0, 1);
         color = black;
         draw(1f);
     });
+    
     float floorHei = 0;
     (float x, float y, float areaWidth, float areaHeight)? drawArea = null;
     Polygon? shaftPoly = null;
@@ -58,19 +61,36 @@ public class BasicElevator(
 
     public override void SetDrawInfo(float x, float y, float areaWidth, float areaHeight, int floors)
     {
-        if (areaWidth <= 0 || areaHeight <= 0)
-            throw new Exception($"Invalida area rect({x}, {y}, {areaWidth}, {areaHeight})");
-        
         drawArea = (x, y, areaWidth, areaHeight);
-        shaftPoly = Polygons.Rect(x, y, 0, areaWidth, areaHeight);
+        shaftPoly = Polygons.Rect(
+            x + areaWidth / 2,
+            y - areaHeight / 2,
+            0, areaWidth, areaHeight
+        );
         floorHei = areaHeight / floors;
-        elevatorPoly = Polygons.Rect(x + 0.5f, y - floorHei * (floors - 1), 0, areaWidth * 0.9f, floorHei);
+        elevatorPoly = Polygons.Rect(
+            x + 0.05f * areaWidth + areaWidth * 0.45f,
+            y - floorHei * (floors - 1) - floorHei / 2,
+            0,
+            areaWidth * 0.9f,
+            floorHei
+        );
     }
 
     public override void Simulate(float dt)
     {
+        while (dt > 0.1f)
+        {
+            SmallSimulate(0.1f);
+            dt -= 0.1f;
+        }
+        SmallSimulate(dt);
+    }
+
+    void SmallSimulate(float dt)
+    {
         t += dt;
-        if (t >= 0.25f)
+        if (t >= 0.2f)
         {
             t = 0f;
             var control = GetController();
@@ -97,14 +117,15 @@ public class BasicElevator(
         if (target < YPosition)
             YPosition -= speed * dt;
 
+        const float mindiff = 0.01f;
         var diff = float.Abs(target - YPosition);
-        if (diff < 0.1 && !waiting)
+        if (diff < mindiff && !waiting)
         {
             YPosition = target;
             DoorIsOpen = true;
             doorOpenWaiting = 5f;
         }
-        else if (diff > 0.1)
+        else if (diff > mindiff)
         {
             waiting = false;
         }

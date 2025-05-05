@@ -5,7 +5,6 @@ public class ElevatorController
     /// <summary>
     /// The floor target of the elevator.
     /// </summary>
-    /// <value></value>
     public int Target { get; set; }
 
     /// <summary>
@@ -20,8 +19,18 @@ public class ElevatorController
     /// </summary>
     public required float YPosition { get; init; }
 
-    
+    /// <summary>
+    /// Get if the door is open and delivering people.
+    /// </summary>
     public required bool DoorIsOpen { get; init; }
+
+    /// <summary>
+    /// Access all memory of elevator calling.
+    /// </summary>
     public required Memory<CallInfo> CallMemory { get; init; }
+    
+    /// <summary>
+    /// Access all memory of elevator floor requests.
+    /// </summary>
     public required Memory<RequestInfo> RequestMemory { get; init; }
 }
